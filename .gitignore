@@ -21,6 +21,7 @@ build/
 *.ipr
 out/
 src/main/resources/
+fileUpload/*
 
 ### NetBeans ###
 /nbproject/private/

@@ -3,24 +3,80 @@ package com.codegym.controllers;
 import com.codegym.models.Book;
 import com.codegym.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+import java.util.Optional;
 
+@CrossOrigin
 @RestController
 public class BookController {
     @Autowired
     BookService bookService;
-    @GetMapping("/api/admin/book-list")
-    public ResponseEntity<Page<Book>> listAllBooks(Pageable pageable) {
-        Page<Book> books = bookService.findAll(pageable);
+
+    @GetMapping("/api/admin/book")
+    public ResponseEntity<List<Book>> listAllBooks() {
+        List<Book> books = (List<Book>) bookService.findAll();
         if (books.isEmpty()) {
-            return new ResponseEntity<Page<Book>>(books, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<Page<Book>>(books,HttpStatus.OK);
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/admin/book/{id}")
+    public ResponseEntity<Optional<Book>> getBook(@PathVariable("id") long id) {
+        System.out.println("Fetching Customer with id " + id);
+        Optional<Book> book = bookService.findById(id);
+        if (!book.isPresent()) {
+            System.out.println("Customer with id " + id + " not found");
+            return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/admin/book")
+    public ResponseEntity<Void> createBook(@RequestBody Book book, UriComponentsBuilder ucBuilder) {
+        System.out.println("Creating Book " + book.getName());
+        bookService.save(book);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(book.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/api/admin/book/{id}")
+    public ResponseEntity<Optional<Book>> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
+        System.out.println("Updating Book " + id);
+
+        Optional<Book> currentBook = bookService.findById(id);
+
+        if (!currentBook.isPresent()) {
+            System.out.println("Book with id " + id + " not found");
+            return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
+        }
+        currentBook.get().setName(book.getName());
+        currentBook.get().setDescription(book.getDescription());
+        currentBook.get().setImage(book.getImage());
+        currentBook.get().setPrice(book.getPrice());
+        currentBook.get().setQuantity(book.getQuantity());
+        bookService.save(book);
+        return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/admin/book/{id}")
+    public ResponseEntity<Book> deleteBook(@PathVariable("id") long id) {
+        System.out.println("Fetching & Deleting Book with id " + id);
+
+        Optional<Book> book = bookService.findById(id);
+        if (!book.isPresent()) {
+            System.out.println("Unable to delete. Book with id " + id + " not found");
+            return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+        }
+
+        bookService.remove(id);
+        return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
     }
 }
