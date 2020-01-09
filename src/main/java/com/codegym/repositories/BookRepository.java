@@ -1,4 +1,4 @@
 package com.codegym.repositories;
 
-public class BookRepository {
+public interface BookRepository {
 }
