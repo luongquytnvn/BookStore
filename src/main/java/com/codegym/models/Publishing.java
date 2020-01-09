@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class  Publishing {
+public class Publishing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
