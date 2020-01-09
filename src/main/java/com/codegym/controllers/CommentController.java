@@ -1,6 +1,5 @@
 package com.codegym.controllers;
 
-import com.codegym.models.Category;
 import com.codegym.models.Comment;
 import com.codegym.services.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
