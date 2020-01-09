@@ -12,12 +12,12 @@ import java.io.IOException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class UploadFileController {
     @Autowired
     Environment env;
 
-    @PostMapping("/upload-file")
+    @PostMapping("/admin/upload-file")
     public ResponseEntity<Void> createBook(@RequestParam("file") MultipartFile file) throws IOException {
         long time = System.currentTimeMillis();
         String fileName = time + "-" + file.getOriginalFilename();

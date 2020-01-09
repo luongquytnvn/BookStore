@@ -15,17 +15,17 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class BookController {
     @Autowired
     BookService bookService;
     @Autowired
     Environment env;
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String allAccess() {
         return "Public Content.";
     }
-    @GetMapping("/book")
+    @GetMapping("/admin/book")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAll();
         if (books.isEmpty()) {
@@ -34,7 +34,7 @@ public class BookController {
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/admin/book/{id}")
     public ResponseEntity<Optional<Book>> getBook(@PathVariable("id") long id) {
         System.out.println("Fetching Customer with id " + id);
         Optional<Book> book = bookService.findById(id);
@@ -45,7 +45,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
     }
 
-    @PostMapping("/book")
+    @PostMapping("/admin/book")
     public ResponseEntity<Void> createBook(@RequestBody Book book, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating Book " + book.getName());
         bookService.save(book);
@@ -54,7 +54,7 @@ public class BookController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/book/{id}")
+    @PutMapping("/admin/book/{id}")
     public ResponseEntity<Optional<Book>> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
         System.out.println("Updating Book " + id);
 
@@ -66,14 +66,14 @@ public class BookController {
         }
         currentBook.get().setName(book.getName());
         currentBook.get().setDescription(book.getDescription());
-        currentBook.get().setImage(book.getImage());
+        currentBook.get().setPicture(book.getPicture());
         currentBook.get().setPrice(book.getPrice());
-        currentBook.get().setQuantity(book.getQuantity());
+        currentBook.get().setAmount(book.getAmount());
         bookService.save(book);
         return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.OK);
     }
 
-    @DeleteMapping("/book/{id}")
+    @DeleteMapping("/admin/book/{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Book with id " + id);
 
