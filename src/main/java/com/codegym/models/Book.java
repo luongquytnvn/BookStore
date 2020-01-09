@@ -1,9 +1,7 @@
 package com.codegym.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Book {
@@ -11,12 +9,44 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private long price;
-    private String image;
+    private Number price;
+    private String picture;
     private String description;
-    private long quantity;
+    private Number amount;
 
-    public Book() {
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private Author author;
+
+    @OneToMany(targetEntity = Comment.class, fetch = FetchType.EAGER)
+    private Set<Comment> comments;
+
+    @ManyToMany
+    private Set<Language> languages;
+
+    @ManyToOne
+    @JoinColumn(name = "publishing")
+    private Publishing publishing;
+
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
+    public Book(int i) {
+    }
+
+    public Book(Long id, String name, Number price, String picture, String description, Number amount, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.picture = picture;
+        this.description = description;
+        this.amount = amount;
+        this.author = author;
+        this.comments = comments;
+        this.languages = languages;
+        this.publishing = publishing;
+        this.category = category;
     }
 
     public Long getId() {
@@ -35,20 +65,20 @@ public class Book {
         this.name = name;
     }
 
-    public long getPrice() {
+    public Number getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Number price) {
         this.price = price;
     }
 
-    public String getImage() {
-        return image;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public String getDescription() {
@@ -59,11 +89,51 @@ public class Book {
         this.description = description;
     }
 
-    public long getQuantity() {
-        return quantity;
+    public Number getAmount() {
+        return amount;
     }
 
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
+    public void setAmount(Number amount) {
+        this.amount = amount;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<Language> languages) {
+        this.languages = languages;
+    }
+
+    public Publishing getPublishing() {
+        return publishing;
+    }
+
+    public void setPublishing(Publishing publishing) {
+        this.publishing = publishing;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
