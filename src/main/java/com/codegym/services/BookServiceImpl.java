@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class BookService implements IBookService{
+public class BookServiceImpl implements IBookService{
     @Autowired
     BookRepository bookRepository;
 

@@ -1,7 +1,7 @@
 package com.codegym.controllers;
 
 import com.codegym.models.Book;
-import com.codegym.services.BookService;
+import com.codegym.services.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +15,17 @@ import java.util.Optional;
 @RequestMapping("/book")
 public class BookController {
     @Autowired
-    BookService bookService;
+    BookServiceImpl bookServiceImpl;
 
     @GetMapping("home")
     public ResponseEntity<Iterable<Book>> showListBook() {
-        Iterable<Book> books = bookService.findAllBook();
+        Iterable<Book> books = bookServiceImpl.findAllBook();
         return new ResponseEntity<Iterable<Book>>(books, HttpStatus.OK);
     }
     @PostMapping("/add")
     public ResponseEntity addNewBook(@Valid @RequestBody Book book){
         try {
-            bookService.save(book);
+            bookServiceImpl.save(book);
             return new ResponseEntity(HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -33,7 +33,7 @@ public class BookController {
     }
     @GetMapping("{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id){
-        Optional<Book> book = bookService.findById(id);
+        Optional<Book> book = bookServiceImpl.findById(id);
         if (book.isPresent()){
             return new ResponseEntity<>(book.get(), HttpStatus.OK);
         }
@@ -41,7 +41,7 @@ public class BookController {
     }
     @PutMapping("{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book){
-       Optional<Book> currentBook = bookService.findById(id);
+       Optional<Book> currentBook = bookServiceImpl.findById(id);
        if (currentBook.isPresent()){
            currentBook.get().setId(id);
            currentBook.get().setAmount(book.getAmount());
@@ -55,7 +55,7 @@ public class BookController {
            currentBook.get().setPrice(book.getPrice());
            currentBook.get().setPublishing(book.getPublishing());
 
-           bookService.save(currentBook.get());
+           bookServiceImpl.save(currentBook.get());
            return new ResponseEntity<Book>(currentBook.get(), HttpStatus.OK);
        }
        return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
@@ -63,9 +63,9 @@ public class BookController {
     }
     @DeleteMapping("{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable Long id){
-        Optional<Book> book = bookService.findById(id);
+        Optional<Book> book = bookServiceImpl.findById(id);
         if (book.isPresent()){
-            bookService.remote(id);
+            bookServiceImpl.remote(id);
             return new ResponseEntity<Book>(HttpStatus.OK);
         }
         return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
