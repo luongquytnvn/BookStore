@@ -1,8 +1,6 @@
 package com.codegym.controllers;
 
-import com.codegym.models.Book;
 import com.codegym.models.Category;
-import com.codegym.services.BookServiceImpl;
 import com.codegym.services.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
