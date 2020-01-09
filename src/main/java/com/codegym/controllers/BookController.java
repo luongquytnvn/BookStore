@@ -13,15 +13,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/api/admin")
 public class BookController {
     @Autowired
     BookService bookService;
     @Autowired
     Environment env;
-
-    @GetMapping("/api/admin/book")
+    @GetMapping("/")
+    public String allAccess() {
+        return "Public Content.";
+    }
+    @GetMapping("/book")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAll();
         if (books.isEmpty()) {
@@ -30,7 +34,7 @@ public class BookController {
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/api/admin/book/{id}")
+    @GetMapping("/book/{id}")
     public ResponseEntity<Optional<Book>> getBook(@PathVariable("id") long id) {
         System.out.println("Fetching Customer with id " + id);
         Optional<Book> book = bookService.findById(id);
@@ -41,7 +45,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
     }
 
-    @PostMapping("/api/admin/book")
+    @PostMapping("/book")
     public ResponseEntity<Void> createBook(@RequestBody Book book, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating Book " + book.getName());
         bookService.save(book);
@@ -50,7 +54,7 @@ public class BookController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/admin/book/{id}")
+    @PutMapping("/book/{id}")
     public ResponseEntity<Optional<Book>> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
         System.out.println("Updating Book " + id);
 
@@ -69,7 +73,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/admin/book/{id}")
+    @DeleteMapping("/book/{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Book with id " + id);
 
