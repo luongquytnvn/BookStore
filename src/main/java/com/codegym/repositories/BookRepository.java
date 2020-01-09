@@ -1,4 +1,8 @@
 package com.codegym.repositories;
 
-public class BookRepository {
+import com.codegym.models.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookRepository extends JpaRepository<Book , Long> {
+
 }

@@ -32,7 +32,7 @@ public class Book {
     @JoinColumn(name = "category")
     private Category category;
 
-    public Book(int i) {
+    public Book() {
     }
 
     public Book(Long id, String name, Number price, String picture, String description, Number amount, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
