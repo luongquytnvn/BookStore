@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -21,10 +22,12 @@ public class BookController {
     BookService bookService;
     @Autowired
     Environment env;
+
     @GetMapping("/admin")
     public String allAccess() {
         return "Public Content.";
     }
+
     @GetMapping("/admin/book")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAll();
@@ -46,12 +49,16 @@ public class BookController {
     }
 
     @PostMapping("/admin/book")
-    public ResponseEntity<Void> createBook(@RequestBody Book book, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
         System.out.println("Creating Book " + book.getName());
+        long time = System.currentTimeMillis();
+        String fileName = time + "-" + book.getPicture();
+        String filePath = env.getProperty("fileLink") + fileName;
+        book.setPicture(filePath);
         bookService.save(book);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(book.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        System.out.println(book.getId());
+        Optional<Book> currentBook = bookService.findById(book.getId());
+        return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.CREATED);
     }
 
     @PutMapping("/admin/book/{id}")

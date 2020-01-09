@@ -18,11 +18,10 @@ public class UploadFileController {
     Environment env;
 
     @PostMapping("/admin/upload-file")
-    public ResponseEntity<Void> createBook(@RequestParam("file") MultipartFile file) throws IOException {
-        long time = System.currentTimeMillis();
-        String fileName = time + "-" + file.getOriginalFilename();
-        String filePath = env.getProperty("fileLink") + fileName;
-        file.transferTo(new File(filePath));
+    public ResponseEntity<Void> createBook(@RequestParam("fileUpLoad") MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        file.transferTo(new File(fileName));
+        System.out.println(fileName);
         System.out.println("uploaded");
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

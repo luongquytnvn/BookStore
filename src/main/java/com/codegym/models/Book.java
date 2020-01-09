@@ -9,10 +9,10 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Number price;
+    private long price;
     private String picture;
     private String description;
-    private Number amount;
+    private long amount;
 
     @ManyToOne
     @JoinColumn(name = "author")
@@ -35,7 +35,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, Number price, String picture, String description, Number amount, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
+    public Book(Long id, String name, long price, String picture, String description, long amount, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -65,11 +65,11 @@ public class Book {
         this.name = name;
     }
 
-    public Number getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(Number price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
@@ -89,11 +89,11 @@ public class Book {
         this.description = description;
     }
 
-    public Number getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(Number amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
