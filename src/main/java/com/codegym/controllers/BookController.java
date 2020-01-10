@@ -24,20 +24,16 @@ public class BookController {
     Environment env;
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public String allAccess() {
         return "Public Content.";
     }
 
     @GetMapping("/admin/book")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAllBook();
         if (books.isEmpty()) {
             return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
         }
-        File file = new File("F:/App/backgroundunnamed (1).jpg");
-        System.out.println(file.getAbsolutePath());
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
