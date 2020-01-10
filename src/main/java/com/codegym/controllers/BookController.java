@@ -1,16 +1,16 @@
 package com.codegym.controllers;
 
 import com.codegym.models.Book;
-import com.codegym.services.BookService;
+import com.codegym.services.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
+import java.nio.file.FileSystem;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,21 +19,25 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class BookController {
     @Autowired
-    BookService bookService;
+    IBookService bookService;
     @Autowired
     Environment env;
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public String allAccess() {
         return "Public Content.";
     }
 
     @GetMapping("/admin/book")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<Book>> listAllBooks() {
-        List<Book> books = (List<Book>) bookService.findAll();
+        List<Book> books = (List<Book>) bookService.findAllBook();
         if (books.isEmpty()) {
             return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
         }
+        File file = new File("F:/App/backgroundunnamed (1).jpg");
+        System.out.println(file.getAbsolutePath());
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
@@ -51,14 +55,8 @@ public class BookController {
     @PostMapping("/admin/book")
     public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
         System.out.println("Creating Book " + book.getName());
-        long time = System.currentTimeMillis();
-        String fileName = time + "-" + book.getPicture();
-        String filePath = env.getProperty("fileLink") + fileName;
-        book.setPicture(filePath);
         bookService.save(book);
-        System.out.println(book.getId());
-        Optional<Book> currentBook = bookService.findById(book.getId());
-        return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.CREATED);
+        return new ResponseEntity<Optional<Book>>(HttpStatus.CREATED);
     }
 
     @PutMapping("/admin/book/{id}")
@@ -90,7 +88,7 @@ public class BookController {
             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
         }
 
-        bookService.remove(id);
+        bookService.remote(id);
         return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
     }
 }

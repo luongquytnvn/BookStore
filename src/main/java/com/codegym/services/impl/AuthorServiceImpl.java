@@ -2,23 +2,20 @@ package com.codegym.services.impl;
 
 import com.codegym.models.Author;
 import com.codegym.repositories.AuthorRepository;
-import com.codegym.services.AuthorService;
+import com.codegym.services.IAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
-
 @Service
-public class AuthorServiceImpl implements AuthorService {
-
+public class AuthorServiceImpl implements IAuthorService {
     @Autowired
-    private AuthorRepository authorRepository;
+    AuthorRepository authorRepository;
 
     @Override
-    public Iterable<Author> findAll() {
-        return  authorRepository.findAll();
+    public Iterable<Author> findAllAuthor() {
+        return authorRepository.findAll();
     }
 
     @Override
@@ -32,7 +29,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void remove(Long id) {
-        authorRepository.deleteById(id);
+    public void remote(Long id) {
+    authorRepository.deleteById(id);
     }
 }

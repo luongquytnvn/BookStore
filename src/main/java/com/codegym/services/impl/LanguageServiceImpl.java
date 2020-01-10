@@ -1,7 +1,8 @@
-package com.codegym.services;
+package com.codegym.services.impl;
 
 import com.codegym.models.Language;
 import com.codegym.repositories.LanguageRepository;
+import com.codegym.services.ILanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

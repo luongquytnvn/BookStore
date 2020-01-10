@@ -1,7 +1,7 @@
 package com.codegym.controllers;
 
 import com.codegym.models.Author;
-import com.codegym.services.AuthorServiceImpl;
+import com.codegym.services.impl.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

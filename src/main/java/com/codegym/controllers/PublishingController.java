@@ -1,6 +1,5 @@
 package com.codegym.controllers;
 
-import com.codegym.models.Category;
 import com.codegym.models.Publishing;
 import com.codegym.services.PublishingService;
 import org.springframework.beans.factory.annotation.Autowired;
