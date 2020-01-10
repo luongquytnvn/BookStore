@@ -1,72 +1,82 @@
 package com.codegym.controllers;
 
+import com.codegym.models.Author;
 import com.codegym.models.Category;
-import com.codegym.services.CategoryServiceImpl;
+import com.codegym.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
-@RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/category")
+@Controller
 public class CategoryController {
 
     @Autowired
-    CategoryServiceImpl categoryServiceImpl;
+    private CategoryService categoryService;
 
-    @GetMapping("home")
-    public ResponseEntity<Iterable<Category>> showListCategory() {
-        Iterable<Category> categories = categoryServiceImpl.findAllCategory();
-        return new ResponseEntity<Iterable<Category>>(categories, HttpStatus.OK);
+    @GetMapping("/api/admin/category")
+    public ResponseEntity<List<Category>> listAllCategories() {
+        List<Category> categories = (List<Category>) categoryService.findAll();
+        if (categories.isEmpty()) {
+            return new ResponseEntity<List<Category>>(categories, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity addNewCategory(@Valid @RequestBody Category category) {
-        try {
-            categoryServiceImpl.save(category);
-            return new ResponseEntity(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    @GetMapping("/api/admin/category/{id}")
+    public ResponseEntity<Optional<Category>> getCategory(@PathVariable("id") long id) {
+        System.out.println("Category with id " + id);
+        Optional<Category> category = categoryService.findById(id);
+        if (!category.isPresent()) {
+            System.out.println("Category with id " + id + "not found");
+            return new ResponseEntity<Optional<Category>>(category, HttpStatus.NOT_FOUND);
         }
+
+        return new ResponseEntity<Optional<Category>>(category, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryServiceImpl.findById(id);
-        if (category.isPresent()) {
-            return new ResponseEntity<>(category.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping("/api/admin/category")
+    public ResponseEntity<Void> createCategory(@RequestBody Category category, UriComponentsBuilder uriComponentsBuilder) {
+        System.out.println("Create Category" + category.getName());
+        categoryService.save(category);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(uriComponentsBuilder.path("/categories/{id}").buildAndExpand(category.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        Optional<Category> currentCategory = categoryServiceImpl.findById(id);
-        if (currentCategory.isPresent()) {
-            currentCategory.get().setId(id);
-            currentCategory.get().setBooks(category.getBooks());
-            currentCategory.get().setName(category.getName());
+    @PutMapping("/api/admin/category/{id}")
+    public ResponseEntity<Optional<Category>> updateCategory(@PathVariable("id") long id, @RequestBody Category category) {
+        System.out.println("Update Category" + id);
 
+        Optional<Category> currentCategory = categoryService.findById(id);
 
-            categoryServiceImpl.save(currentCategory.get());
-            return new ResponseEntity<Category>(currentCategory.get(), HttpStatus.OK);
+        if (!currentCategory.isPresent()) {
+            System.out.println("Category with id" + id + "not found");
+            return new ResponseEntity<Optional<Category>>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
 
+        currentCategory.get().setName(category.getName());
+        currentCategory.get().setBooks(category.getBooks());
+        categoryService.save(category);
+        return new ResponseEntity<Optional<Category>>(currentCategory, HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Category> deleteCategory(@PathVariable Long id) {
-        Optional<Category> category = categoryServiceImpl.findById(id);
-        if (category.isPresent()) {
-            categoryServiceImpl.remote(id);
-            return new ResponseEntity<Category>(HttpStatus.OK);
+    @DeleteMapping("/api/admin/category/{id}")
+    public ResponseEntity<Category> deleteCategory(@PathVariable("id") long id) {
+        System.out.println("Delete Category with id" + id);
+
+        Optional<Category> category = categoryService.findById(id);
+        if (!category.isPresent()) {
+            System.out.println("Unable to delete. Category with id" + id + "not found");
+            return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
+        categoryService.remove(id);
+        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
 }
-
