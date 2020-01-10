@@ -62,7 +62,7 @@ public class AuthorController {
         }
 
         currentAuthor.get().setName(author.getName());
-        currentAuthor.get().setInformation(author.getInformation());
+        currentAuthor.get().setInFor(author.getInFor());
         currentAuthor.get().setCountry(author.getCountry());
         authorService.save(author);
         return new ResponseEntity<Optional<Author>>(currentAuthor, HttpStatus.OK);
