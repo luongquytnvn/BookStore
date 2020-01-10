@@ -39,10 +39,10 @@ public class BookController {
 
     @GetMapping("/admin/book/{id}")
     public ResponseEntity<Optional<Book>> getBook(@PathVariable("id") long id) {
-        System.out.println("Fetching Customer with id " + id);
+        System.out.println("Fetching Book with id " + id);
         Optional<Book> book = bookService.findById(id);
         if (!book.isPresent()) {
-            System.out.println("Customer with id " + id + " not found");
+            System.out.println("Book with id " + id + " not found");
             return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
