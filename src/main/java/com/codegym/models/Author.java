@@ -1,6 +1,8 @@
 package com.codegym.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -8,8 +10,17 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 4, max = 50)
     private String name;
+
+    @NotBlank
+    @Size(min = 4)
     private String inFor;
+
+    @NotBlank
+    @Size(min = 4)
     private String country;
 
     @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)

@@ -1,6 +1,8 @@
 package com.codegym.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -8,6 +10,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 4, max = 50)
     private String name;
     @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
     private Set<Book> books;

@@ -1,6 +1,9 @@
 package com.codegym.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -8,10 +11,24 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(min = 4, max = 50)
     private String name;
+
+    @NotBlank
+    @PositiveOrZero
     private long price;
+
+    @NotBlank
     private String picture;
+
+    @NotBlank
+    @Size(min = 4)
     private String description;
+
+    @NotBlank
+    @PositiveOrZero
     private long amount;
 
     @ManyToOne
