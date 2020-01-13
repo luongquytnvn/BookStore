@@ -31,13 +31,10 @@ public class User {
 	@Size(max = 120)
 	private String password;
 
-	@NotBlank
-	@Size(min = 3)
 	private String address;
 
 	@NotBlank
-	@Size(min = 3)
-	private String phoneNumber;
+	private String phone;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -48,12 +45,12 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String email, String password, String address, String phoneNumber) {
+	public User(String username, String email, String password, String address, String phone) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.address = address;
-		this.phoneNumber = phoneNumber;
+		this.phone = phone;
 	}
 
 	public String getAddress() {
@@ -64,12 +61,12 @@ public class User {
 		this.address = address;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhone(String phoneNumber) {
+		this.phone = phoneNumber;
 	}
 
 	public Long getId() {

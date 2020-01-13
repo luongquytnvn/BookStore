@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,6 +44,7 @@ public class PublishingController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createPublishing(@RequestBody Publishing publishing, UriComponentsBuilder uriComponentsBuilder) {
         System.out.println("Create Publishing" + publishing.getName());
         publishingService.save(publishing);
@@ -52,6 +54,7 @@ public class PublishingController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<Publishing>> updatePublishing(@PathVariable("id") long id, @RequestBody Publishing publishing) {
         System.out.println("Update Publishing" + id);
 
@@ -69,6 +72,7 @@ public class PublishingController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Publishing> deletePublishing(@PathVariable("id") long id) {
         System.out.println("Delete Publishing with id" + id);
 

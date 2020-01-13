@@ -5,6 +5,7 @@ import com.codegym.services.impl.LanguageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class LanguageController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity addNewLanguage(@Valid @RequestBody Language language) {
         try {
             languageServiceImpl.save(language);
@@ -43,6 +45,7 @@ public class LanguageController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Language> updateLanguage(@PathVariable Long id, @RequestBody Language language) {
         Optional<Language> currentLanguage = languageServiceImpl.findById(id);
         if (currentLanguage.isPresent()) {
@@ -58,6 +61,7 @@ public class LanguageController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Language> deleteLanguage(@PathVariable Long id) {
         Optional<Language> language = languageServiceImpl.findById(id);
         if (language.isPresent()) {
