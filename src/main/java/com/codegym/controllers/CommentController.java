@@ -15,12 +15,13 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/comment")
 public class CommentController {
 
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/api/admin/comment")
+    @GetMapping("")
     public ResponseEntity<List<Comment>> listAllComments() {
         List<Comment> comments = (List<Comment>) commentService.findAll();
         if (comments.isEmpty()) {
@@ -29,7 +30,7 @@ public class CommentController {
         return new ResponseEntity<List<Comment>>(comments, HttpStatus.OK);
     }
 
-    @GetMapping("/api/admin/comment/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Comment>> getComment(@PathVariable("id") long id) {
         System.out.println("Comment with id " + id);
         Optional<Comment> comment = commentService.findById(id);
@@ -41,7 +42,7 @@ public class CommentController {
         return new ResponseEntity<Optional<Comment>>(comment, HttpStatus.OK);
     }
 
-    @PostMapping("/api/admin/comment")
+    @PostMapping("")
     public ResponseEntity<Void> createComment(@RequestBody Comment comment, UriComponentsBuilder uriComponentsBuilder) {
         System.out.println("Create Comment" + comment.getName());
        commentService.save(comment);
@@ -50,7 +51,7 @@ public class CommentController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/admin/comment/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Optional<Comment>> updateComment(@PathVariable("id") long id, @RequestBody Comment comment) {
         System.out.println("Update Comment " + id);
 
@@ -68,7 +69,7 @@ public class CommentController {
         return new ResponseEntity<Optional<Comment>>(currentComment, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/admin/comment/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Comment> deleteComment(@PathVariable("id") long id) {
         System.out.println("Delete Comment with id" + id);
 

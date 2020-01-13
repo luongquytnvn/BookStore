@@ -16,12 +16,13 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/category")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/api/admin/category")
+    @GetMapping("")
     public ResponseEntity<List<Category>> listAllCategories() {
         List<Category> categories = (List<Category>) categoryService.findAll();
         if (categories.isEmpty()) {
@@ -30,7 +31,7 @@ public class CategoryController {
         return new ResponseEntity<List<Category>>(categories, HttpStatus.OK);
     }
 
-    @GetMapping("/api/admin/category/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Category>> getCategory(@PathVariable("id") long id) {
         System.out.println("Category with id " + id);
         Optional<Category> category = categoryService.findById(id);
@@ -42,7 +43,7 @@ public class CategoryController {
         return new ResponseEntity<Optional<Category>>(category, HttpStatus.OK);
     }
 
-    @PostMapping("/api/admin/category")
+    @PostMapping("")
     public ResponseEntity<Void> createCategory(@RequestBody Category category, UriComponentsBuilder uriComponentsBuilder) {
         System.out.println("Create Category" + category.getName());
         categoryService.save(category);
@@ -51,7 +52,7 @@ public class CategoryController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/admin/category/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Optional<Category>> updateCategory(@PathVariable("id") long id, @RequestBody Category category) {
         System.out.println("Update Category" + id);
 
@@ -68,7 +69,7 @@ public class CategoryController {
         return new ResponseEntity<Optional<Category>>(currentCategory, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/admin/category/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Category> deleteCategory(@PathVariable("id") long id) {
         System.out.println("Delete Category with id" + id);
 

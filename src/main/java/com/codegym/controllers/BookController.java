@@ -18,19 +18,14 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/book")
 public class BookController {
     @Autowired
     IBookService bookService;
     @Autowired
     Environment env;
 
-    @GetMapping("/admin")
-    public String allAccess() {
-        return "Public Content.";
-    }
-
-    @GetMapping("/admin/book")
+    @GetMapping("")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAllBook();
         if (books.isEmpty()) {
@@ -39,7 +34,7 @@ public class BookController {
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/admin/book/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Book>> getBook(@PathVariable("id") long id) {
         System.out.println("Fetching Book with id " + id);
         Optional<Book> book = bookService.findById(id);
@@ -50,7 +45,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
     }
 
-    @PostMapping("/admin/book")
+    @PostMapping("")
     public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
         System.out.println("Creating Book " + book.getName());
         Category category = book.getCategory();
@@ -62,7 +57,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/admin/book/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Optional<Book>> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
         System.out.println("Updating Book " + id);
 
@@ -86,7 +81,7 @@ public class BookController {
         return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.OK);
     }
 
-    @DeleteMapping("/admin/book/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Book with id " + id);
 

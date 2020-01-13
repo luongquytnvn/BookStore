@@ -17,12 +17,12 @@ public class AuthorController {
     @Autowired
     AuthorServiceImpl authorServiceImpl;
 
-    @GetMapping("/home")
+    @GetMapping("")
     public ResponseEntity<Iterable<Author>> showListAuthor() {
         Iterable<Author> authors = authorServiceImpl.findAllAuthor();
         return new ResponseEntity<Iterable<Author>>(authors, HttpStatus.OK);
     }
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity addNewAuthor(@Valid @RequestBody Author author){
         try {
             authorServiceImpl.save(author);
@@ -40,7 +40,7 @@ public class AuthorController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody Author author){
         Optional<Author> currentAuthor = authorServiceImpl.findById(id);
         if (currentAuthor.isPresent()){
@@ -56,7 +56,7 @@ public class AuthorController {
         return new ResponseEntity<Author>(HttpStatus.NOT_FOUND);
 
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Author> deleteAuthor(@PathVariable Long id){
         Optional<Author> author = authorServiceImpl.findById(id);
         if (author.isPresent()){
