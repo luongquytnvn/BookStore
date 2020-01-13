@@ -1,6 +1,8 @@
 package com.codegym.models;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -10,9 +12,37 @@ public class Book {
     private Long id;
     private String name;
     private long price;
-    private String picture;
     private String description;
     private long amount;
+    private Date dateCreate;
+    private long vote = 0;
+
+    @OneToMany
+    private List<BookPicture> bookPictures;
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public long getVote() {
+        return vote;
+    }
+
+    public void setVote(long vote) {
+        this.vote = vote;
+    }
+
+    public List<BookPicture> getBookPictures() {
+        return bookPictures;
+    }
+
+    public void setBookPictures(List<BookPicture> bookPictures) {
+        this.bookPictures = bookPictures;
+    }
 
     @ManyToOne
     @JoinColumn(name = "author")
@@ -35,13 +65,13 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String name, long price, String picture, String description, long amount, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
-        this.id = id;
+    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
         this.name = name;
         this.price = price;
-        this.picture = picture;
         this.description = description;
         this.amount = amount;
+        this.dateCreate = dateCreate;
+        this.bookPictures = bookPictures;
         this.author = author;
         this.comments = comments;
         this.languages = languages;
@@ -71,14 +101,6 @@ public class Book {
 
     public void setPrice(long price) {
         this.price = price;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
     }
 
     public String getDescription() {
