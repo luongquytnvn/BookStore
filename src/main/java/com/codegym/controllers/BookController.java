@@ -3,6 +3,7 @@ package com.codegym.controllers;
 import com.codegym.models.Book;
 import com.codegym.models.Category;
 import com.codegym.models.Publishing;
+import com.codegym.repositories.BookRepository;
 import com.codegym.services.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,8 @@ import java.util.Optional;
 @RequestMapping("/api/book")
 public class BookController {
     @Autowired
+    BookRepository bookRepository;
+    @Autowired
     IBookService bookService;
     @Autowired
     Environment env;
@@ -26,6 +29,14 @@ public class BookController {
     @GetMapping("")
     public ResponseEntity<List<Book>> listAllBooks() {
         List<Book> books = (List<Book>) bookService.findAllBook();
+        if (books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+    @GetMapping("/date-create")
+    public ResponseEntity<List<Book>> listAllBooksByDateCreate() {
+        List<Book> books = bookRepository.findByNameContainingOrderByDateCreateDesc("");
         if (books.isEmpty()) {
             return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
         }
@@ -94,4 +105,18 @@ public class BookController {
         bookService.remote(id);
         return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/vote/{id}")
+    public ResponseEntity<Optional<Book>> addVoteBook(@PathVariable("id") long id) {
+        System.out.println("Add vote Book with id " + id);
+        Optional<Book> book = bookService.findById(id);
+        if (!book.isPresent()) {
+            System.out.println("Book with id " + id + " not found");
+            return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
+        }
+        book.get().setVote(book.get().getVote() + 1);
+        this.bookService.save(book.get());
+        return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
+    }
+
 }
