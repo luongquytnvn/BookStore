@@ -12,13 +12,13 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/language")
+@RequestMapping("/api/language")
 
 public class LanguageController {
 
     @Autowired
     LanguageServiceImpl languageServiceImpl;
-    @GetMapping("home")
+    @GetMapping("/home")
     public ResponseEntity<Iterable<Language>> showListLanguage() {
         Iterable<Language> languages = languageServiceImpl.findAllLanguage();
         return new ResponseEntity<Iterable<Language>>(languages, HttpStatus.OK);

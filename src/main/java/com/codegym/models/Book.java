@@ -20,6 +20,9 @@ public class Book {
     @OneToMany
     private List<BookPicture> bookPictures;
 
+    @ManyToMany
+    private List<Author> authors;
+
     public Date getDateCreate() {
         return dateCreate;
     }
@@ -44,9 +47,6 @@ public class Book {
         this.bookPictures = bookPictures;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author")
-    private Author author;
 
     @OneToMany(targetEntity = Comment.class, fetch = FetchType.EAGER)
     private Set<Comment> comments;
@@ -65,18 +65,26 @@ public class Book {
     public Book() {
     }
 
-    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, Author author, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
+    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.amount = amount;
         this.dateCreate = dateCreate;
         this.bookPictures = bookPictures;
-        this.author = author;
+        this.authors = authors;
         this.comments = comments;
         this.languages = languages;
         this.publishing = publishing;
         this.category = category;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public Long getId() {
@@ -119,13 +127,6 @@ public class Book {
         this.amount = amount;
     }
 
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
 
     public Set<Comment> getComments() {
         return comments;

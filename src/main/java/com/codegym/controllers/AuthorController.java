@@ -12,12 +12,12 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/author")
+@RequestMapping("/api/author")
 public class AuthorController {
     @Autowired
     AuthorServiceImpl authorServiceImpl;
 
-    @GetMapping("home")
+    @GetMapping("/home")
     public ResponseEntity<Iterable<Author>> showListAuthor() {
         Iterable<Author> authors = authorServiceImpl.findAllAuthor();
         return new ResponseEntity<Iterable<Author>>(authors, HttpStatus.OK);
@@ -31,11 +31,12 @@ public class AuthorController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id){
         Optional<Author> author = authorServiceImpl.findById(id);
         if (author.isPresent()){
-            return new ResponseEntity<>(author.get(), HttpStatus.OK);
+            System.out.println("find Author");
+            return new ResponseEntity<Author>(author.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
