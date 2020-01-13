@@ -65,7 +65,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, Set<Comment> comments, Set<Language> languages, Publishing publishing, Category category) {
+    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, Set<Language> languages, Publishing publishing, Category category) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -73,7 +73,6 @@ public class Book {
         this.dateCreate = dateCreate;
         this.bookPictures = bookPictures;
         this.authors = authors;
-        this.comments = comments;
         this.languages = languages;
         this.publishing = publishing;
         this.category = category;
