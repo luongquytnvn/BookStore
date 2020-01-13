@@ -1,6 +1,8 @@
 package com.codegym.controllers;
 
 import com.codegym.models.Book;
+import com.codegym.models.Category;
+import com.codegym.models.Publishing;
 import com.codegym.services.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -51,9 +53,11 @@ public class BookController {
     @PostMapping("/admin/book")
     public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
         System.out.println("Creating Book " + book.getName());
+        Category category = book.getCategory();
+        Publishing publishing = book.getPublishing();
         long millis = System.currentTimeMillis();
         java.sql.Date date = new java.sql.Date(millis);
-        Book currentBook = new Book(book.getName(), book.getPrice(), book.getDescription(), book.getAmount(), date, book.getBookPictures(), book.getAuthors(), book.getComments(), book.getLanguages(), book.getPublishing(), book.getCategory());
+        Book currentBook = new Book(book.getName(), book.getPrice(), book.getDescription(), book.getAmount(), date, book.getBookPictures(), book.getAuthors(), book.getComments(), book.getLanguages(), publishing, category);
         bookService.save(currentBook);
         return new ResponseEntity<Optional<Book>>(HttpStatus.CREATED);
     }

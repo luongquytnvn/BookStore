@@ -34,7 +34,7 @@ public class LanguageController {
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Language> getLanguageById(@PathVariable Long id) {
         Optional<Language> language = languageServiceImpl.findById(id);
         if (language.isPresent()) {
