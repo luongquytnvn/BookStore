@@ -51,7 +51,10 @@ public class BookController {
     @PostMapping("/admin/book")
     public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
         System.out.println("Creating Book " + book.getName());
-        bookService.save(book);
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        Book currentBook = new Book(book.getName(), book.getPrice(), book.getDescription(), book.getAmount(), date, book.getBookPictures(), book.getAuthor(), book.getComments(), book.getLanguages(), book.getPublishing(), book.getCategory());
+        bookService.save(currentBook);
         return new ResponseEntity<Optional<Book>>(HttpStatus.CREATED);
     }
 
@@ -66,10 +69,15 @@ public class BookController {
             return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
         }
         currentBook.get().setName(book.getName());
-        currentBook.get().setDescription(book.getDescription());
-        currentBook.get().setPicture(book.getPicture());
         currentBook.get().setPrice(book.getPrice());
+        currentBook.get().setDescription(book.getDescription());
         currentBook.get().setAmount(book.getAmount());
+        currentBook.get().setBookPictures(book.getBookPictures());
+        currentBook.get().setAuthor(book.getAuthor());
+        currentBook.get().setComments(book.getComments());
+        currentBook.get().setLanguages(book.getLanguages());
+        currentBook.get().setPublishing(book.getPublishing());
+        currentBook.get().setCategory(book.getCategory());
         bookService.save(book);
         return new ResponseEntity<Optional<Book>>(currentBook, HttpStatus.OK);
     }
