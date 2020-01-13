@@ -13,7 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
 public class PublishingController {
 
     @Autowired
