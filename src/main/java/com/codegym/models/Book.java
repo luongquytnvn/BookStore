@@ -2,6 +2,7 @@ package com.codegym.models;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class Book {
     private List<BookPicture> bookPictures;
 
     @ManyToMany
-    private List<Author> authors;
+    private Collection<Author> authors;
 
     public Date getDateCreate() {
         return dateCreate;
@@ -65,7 +66,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, Set<Language> languages, Publishing publishing, Category category) {
+    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, Collection<Author> authors, Set<Language> languages, Publishing publishing, Category category) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -78,11 +79,11 @@ public class Book {
         this.category = category;
     }
 
-    public List<Author> getAuthors() {
+    public Collection<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Collection<Author> authors) {
         this.authors = authors;
     }
 

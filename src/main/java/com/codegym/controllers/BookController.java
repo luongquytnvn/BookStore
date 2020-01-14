@@ -1,5 +1,6 @@
 package com.codegym.controllers;
 
+import com.codegym.models.Author;
 import com.codegym.models.Book;
 import com.codegym.models.Category;
 import com.codegym.models.Publishing;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,30 @@ public class BookController {
         }
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<Book>> listAllBooksByCategory(@PathVariable Long id) {
+        List<Book> books = bookService.findAllByCategory(id);
+        if (books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/author/{id}")
+    public ResponseEntity<List<Book>> listAllBooks(@PathVariable Long id) {
+        List<Long> idList = bookRepository.findBookByAuthor(id);
+        List<Book> books = new ArrayList<>();
+        for (Long idBook : idList) {
+            Optional<Book> book = bookService.findById(idBook);
+            book.ifPresent(books::add);
+        } ;
+        if (books.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
     @GetMapping("/date-create")
     public ResponseEntity<List<Book>> listAllBooksByDateCreate() {
         List<Book> books = bookRepository.findByNameContainingOrderByDateCreateDesc("");
