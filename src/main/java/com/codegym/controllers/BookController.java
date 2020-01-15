@@ -1,10 +1,8 @@
 package com.codegym.controllers;
 
-import com.codegym.models.Author;
-import com.codegym.models.Book;
-import com.codegym.models.Category;
-import com.codegym.models.Publishing;
+import com.codegym.models.*;
 import com.codegym.repositories.BookRepository;
+import com.codegym.services.BookPictureService;
 import com.codegym.services.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -27,6 +25,8 @@ public class BookController {
     IBookService bookService;
     @Autowired
     Environment env;
+    @Autowired
+    BookPictureService bookPictureService;
 
     @GetMapping("")
     public ResponseEntity<List<Book>> listAllBooks() {
@@ -53,7 +53,8 @@ public class BookController {
         for (Long idBook : idList) {
             Optional<Book> book = bookService.findById(idBook);
             book.ifPresent(books::add);
-        } ;
+        }
+        ;
         if (books.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -83,6 +84,14 @@ public class BookController {
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<Book>> createBook(@RequestBody Book book) {
+        List<BookPicture> newBookPictures = new ArrayList<>();
+        if (book.getBookPictures() != null) {
+            for (BookPicture bookPicture : book.getBookPictures()) {
+                bookPictureService.save(bookPicture);
+                newBookPictures.add(bookPicture);
+            }
+        }
+        book.setBookPictures(newBookPictures);
         System.out.println("Creating Book " + book.getName());
         Category category = book.getCategory();
         Publishing publishing = book.getPublishing();
@@ -97,6 +106,14 @@ public class BookController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<Book>> updateBook(@PathVariable("id") long id, @RequestBody Book book) {
         System.out.println("Updating Book " + id);
+        List<BookPicture> newBookPictures = new ArrayList<>();
+        if (book.getBookPictures() != null) {
+            for (BookPicture bookPicture : book.getBookPictures()) {
+                bookPictureService.save(bookPicture);
+                newBookPictures.add(bookPicture);
+            }
+        }
+        book.setBookPictures(newBookPictures);
 
         Optional<Book> currentBook = bookService.findById(id);
 
