@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,14 +14,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/publishing")
 public class PublishingController {
 
     @Autowired
     private PublishingService publishingService;
 
-    @GetMapping("/api/admin/publishing")
+    @GetMapping("")
     public ResponseEntity<List<Publishing>> listAllPublishings() {
         List<Publishing> publishings = (List<Publishing>) publishingService.findAll();
         if (publishings.isEmpty()) {
@@ -29,7 +31,7 @@ public class PublishingController {
         return new ResponseEntity<List<Publishing>>(publishings, HttpStatus.OK);
     }
 
-    @GetMapping("/api/admin/publishing/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Publishing>> getPublishing(@PathVariable("id") long id) {
         System.out.println("Publishing with id " + id);
         Optional<Publishing> publishing = publishingService.findById(id);
@@ -41,7 +43,8 @@ public class PublishingController {
         return new ResponseEntity<Optional<Publishing>>(publishing, HttpStatus.OK);
     }
 
-    @PostMapping("/api/admin/publishing")
+    @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createPublishing(@RequestBody Publishing publishing, UriComponentsBuilder uriComponentsBuilder) {
         System.out.println("Create Publishing" + publishing.getName());
         publishingService.save(publishing);
@@ -50,7 +53,8 @@ public class PublishingController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/admin/publishing/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<Publishing>> updatePublishing(@PathVariable("id") long id, @RequestBody Publishing publishing) {
         System.out.println("Update Publishing" + id);
 
@@ -67,7 +71,8 @@ public class PublishingController {
         return new ResponseEntity<Optional<Publishing>>(currentPublishing, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/admin/publishing/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Publishing> deletePublishing(@PathVariable("id") long id) {
         System.out.println("Delete Publishing with id" + id);
 

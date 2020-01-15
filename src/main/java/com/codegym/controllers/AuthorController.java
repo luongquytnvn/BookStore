@@ -5,6 +5,7 @@ import com.codegym.services.impl.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,17 +13,18 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/author")
+@RequestMapping("/api/author")
 public class AuthorController {
     @Autowired
     AuthorServiceImpl authorServiceImpl;
 
-    @GetMapping("home")
+    @GetMapping("")
     public ResponseEntity<Iterable<Author>> showListAuthor() {
         Iterable<Author> authors = authorServiceImpl.findAllAuthor();
         return new ResponseEntity<Iterable<Author>>(authors, HttpStatus.OK);
     }
-    @PostMapping("/add")
+    @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity addNewAuthor(@Valid @RequestBody Author author){
         try {
             authorServiceImpl.save(author);
@@ -31,15 +33,17 @@ public class AuthorController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Author> getAuthorById(@PathVariable Long id){
         Optional<Author> author = authorServiceImpl.findById(id);
         if (author.isPresent()){
-            return new ResponseEntity<>(author.get(), HttpStatus.OK);
+            System.out.println("find Author");
+            return new ResponseEntity<Author>(author.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Author> updateAuthor(@PathVariable Long id, @RequestBody Author author){
         Optional<Author> currentAuthor = authorServiceImpl.findById(id);
         if (currentAuthor.isPresent()){
@@ -55,7 +59,8 @@ public class AuthorController {
         return new ResponseEntity<Author>(HttpStatus.NOT_FOUND);
 
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Author> deleteAuthor(@PathVariable Long id){
         Optional<Author> author = authorServiceImpl.findById(id);
         if (author.isPresent()){

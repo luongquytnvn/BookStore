@@ -23,7 +23,7 @@ public class Author {
     @Size(min = 4)
     private String country;
 
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
     private Set<Book> books;
     public Author() {
     }
