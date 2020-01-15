@@ -23,18 +23,17 @@ public class Comment {
 
 
     @ManyToOne
-    @JoinColumn(name = "book")
-    private Comment comment;
+    private Book book;
 
     public Comment() {
     }
 
-    public Comment(Long id, String name, Date date, String content, Comment comment) {
+    public Comment(Long id, String name, Date date, String content, Book book) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.content = content;
-        this.comment = comment;
+        this.book = book;
     }
 
     public Long getId() {
@@ -69,11 +68,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Comment getComment() {
-        return comment;
+    public Book getComment() {
+        return book;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
+    public void setComment(Book book) {
+        this.book = book;
     }
 }

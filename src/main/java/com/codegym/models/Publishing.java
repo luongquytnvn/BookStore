@@ -1,6 +1,7 @@
 package com.codegym.models;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -9,13 +10,13 @@ public class Publishing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
-    private Set<Book> books;
+    @OneToMany
+    private List<Book> books;
 
     public Publishing() {
     }
 
-    public Publishing(Long id, String name, Set<Book> books) {
+    public Publishing(Long id, String name, List<Book> books) {
         this.id = id;
         this.name = name;
         this.books = books;
@@ -37,11 +38,11 @@ public class Publishing {
         this.name = name;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

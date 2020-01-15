@@ -48,24 +48,22 @@ public class Book {
     }
 
 
-    @OneToMany(targetEntity = Comment.class, fetch = FetchType.EAGER)
-    private Set<Comment> comments;
+    @OneToMany
+    private List<Comment> comments;
 
     @ManyToMany
-    private Set<Language> languages;
+    private List<Language> languages;
 
     @ManyToOne
-    @JoinColumn(name = "publishing")
     private Publishing publishing;
 
     @ManyToOne
-    @JoinColumn(name = "category")
     private Category category;
 
     public Book() {
     }
 
-    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, Set<Language> languages, Publishing publishing, Category category) {
+    public Book(String name, long price, String description, long amount, Date dateCreate, List<BookPicture> bookPictures, List<Author> authors, List<Language> languages, Publishing publishing, Category category) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -127,19 +125,19 @@ public class Book {
     }
 
 
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
-    public Set<Language> getLanguages() {
+    public List<Language> getLanguages() {
         return languages;
     }
 
-    public void setLanguages(Set<Language> languages) {
+    public void setLanguages(List<Language> languages) {
         this.languages = languages;
     }
 

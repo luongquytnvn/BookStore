@@ -3,6 +3,7 @@ package com.codegym.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,13 +15,13 @@ public class Category {
     @NotBlank
     @Size(min = 4, max = 50)
     private String name;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
-    private Set<Book> books;
+    @OneToMany
+    private List<Book> books;
 
     public Category() {
     }
 
-    public Category(Long id, String name, Set<Book> books) {
+    public Category(Long id, String name, List<Book> books) {
         this.id = id;
         this.name = name;
         this.books = books;
@@ -42,11 +43,11 @@ public class Category {
         this.name = name;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

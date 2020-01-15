@@ -3,6 +3,7 @@ package com.codegym.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,12 +17,12 @@ public class Language {
     private String name;
 
     @ManyToMany
-    private Set<Book> books;
+    private List<Book> books;
 
     public Language() {
     }
 
-    public Language(Long id, String name, Set<Book> books) {
+    public Language(Long id, String name, List<Book> books) {
         this.id = id;
         this.name = name;
         this.books = books;
@@ -43,11 +44,11 @@ public class Language {
         this.name = name;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }
