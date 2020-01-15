@@ -3,6 +3,8 @@ package com.codegym.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,12 +25,12 @@ public class Author {
     @Size(min = 4)
     private String country;
 
-    @ManyToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
-    private Set<Book> books;
+    @ManyToMany
+    private Collection<Book> books;
     public Author() {
     }
 
-    public Author(Long id, String name, String inFor, String country, Set<Book> books) {
+    public Author(Long id, String name, String inFor, String country, Collection<Book> books) {
         this.id = id;
         this.name = name;
         this.inFor = inFor;
@@ -68,11 +70,11 @@ public class Author {
         this.country = country;
     }
 
-    public Set<Book> getBooks() {
+    public Collection<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(Collection<Book> books) {
         this.books = books;
     }
 }

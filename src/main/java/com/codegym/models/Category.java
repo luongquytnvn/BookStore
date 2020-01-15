@@ -14,7 +14,7 @@ public class Category {
     @NotBlank
     @Size(min = 4, max = 50)
     private String name;
-    @OneToMany(targetEntity = Book.class, fetch = FetchType.EAGER)
+    @OneToMany
     private Set<Book> books;
 
     public Category() {
