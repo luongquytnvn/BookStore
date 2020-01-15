@@ -1,5 +1,7 @@
 package com.codegym.models;
 
+import com.codegym.models.user.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -21,7 +23,8 @@ public class Comment {
     @Size(min = 5)
     private String content;
 
-
+    @ManyToOne
+    private User user;
     @ManyToOne
     private Book book;
 
