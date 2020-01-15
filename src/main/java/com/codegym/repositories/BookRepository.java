@@ -17,4 +17,5 @@ public interface BookRepository extends JpaRepository<Book , Long> {
     List<Book> findAllByCategory_Id(Long id);
     @Query(value = "select book_id from book join book_authors on book.id = book_authors.book_id where authors_id = ?1", nativeQuery = true)
     List<Long> findBookByAuthor(Long id);
+
 }
