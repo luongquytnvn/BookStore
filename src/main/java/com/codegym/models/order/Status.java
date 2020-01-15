@@ -1,7 +1,9 @@
 package com.codegym.models.order;
 
 public enum Status {
-    Processing,
+    normal,
+    order,
+    processing,
     Cancel,
     Done
 }

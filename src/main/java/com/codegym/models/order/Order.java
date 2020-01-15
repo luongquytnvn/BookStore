@@ -18,22 +18,16 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //  private Long userId;
-    @ManyToOne()
-    /*@JsonBackReference*/
+    @ManyToOne
     private User user;
 
     @NotBlank
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
     private Status status;
 
-    /*
-      @OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    */
     @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL)
     private List<OrderItem> orderItem;
 

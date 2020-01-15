@@ -8,20 +8,15 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long productId;
+    private Long bookId;
     private Long quantity;
-/*  @ManyToOne
-  @JoinColumn(name = "order_id")
-  @JsonBackReference
-  private Order order;*/
 
     public OrderItem() {
     }
 
-    public OrderItem(Long productId, Long quantity, Order order) {
-        this.productId = productId;
+    public OrderItem(Long bookId, Long quantity, Order order) {
+        this.bookId = bookId;
         this.quantity = quantity;
-        /*  this.order = order;*/
     }
 
     public Long getId() {
@@ -32,12 +27,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 
     public Long getQuantity() {
@@ -47,7 +42,6 @@ public class OrderItem {
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
-
 /*  public Order getOrder() {
     return order;
   }

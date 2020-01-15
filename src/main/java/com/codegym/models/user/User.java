@@ -38,8 +38,6 @@ public class User {
 
     @NotBlank
     private String phone;
-    @OneToMany
-	private List<Comment> comments;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -56,24 +54,6 @@ public class User {
 		this.address = address;
 		this.phone = phone;
 	}
-
-    public User(String username, String email, String password, String address, String phone, List<Comment> comments) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.phone = phone;
-        this.comments = comments;
-    }
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
-
 	public String getAddress() {
         return address;
     }
