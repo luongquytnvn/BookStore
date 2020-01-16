@@ -20,11 +20,18 @@ public class OrderItemController {
         Iterable<OrderItem> orderItems = orderItemRepository.findAll();
         return new ResponseEntity<Iterable<OrderItem>>(orderItems, HttpStatus.OK);
     }
+
+    @GetMapping("/cart/{id}")
+    public ResponseEntity<Iterable<OrderItem>> showListOrderItemInOrder(@PathVariable Long id) {
+        Iterable<OrderItem> orderItems = orderItemRepository.findAll();
+        return new ResponseEntity<Iterable<OrderItem>>(orderItems, HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<?> addNewOrderItem(@RequestBody OrderItem orderItem){
         try {
             orderItemRepository.save(orderItem);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<OrderItem>(orderItem, HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

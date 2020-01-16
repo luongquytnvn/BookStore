@@ -1,6 +1,7 @@
 package com.codegym.controllers;
 
 import com.codegym.models.order.Order;
+import com.codegym.models.order.OrderItem;
 import com.codegym.models.order.Status;
 import com.codegym.repositories.OrderRepository;
 import com.codegym.services.impl.OrderServiceImpl;
@@ -51,6 +52,16 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/cart/order-item/{id}")
+    public ResponseEntity<?> findIdOrderItemListByUserId(@PathVariable Long id) {
+        List<Long> idOrderItemList = orderRepository.findIdOrderItemListByUserId(id);
+        if (!idOrderItemList.isEmpty()) {
+            return new ResponseEntity<List<Long>>(idOrderItemList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Order> findById(@PathVariable Long id) {
         Optional<Order> order = orderService.findById(id);
@@ -76,6 +87,21 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/add/{id}")
+    public ResponseEntity<?> updateOrder(@RequestBody List<OrderItem> orderItems, @PathVariable("id") Long id) {
+
+        Optional<Order> currentOrder = orderService.findById(id);
+        if (currentOrder.isPresent()) {
+            currentOrder.get().setOrderItem(orderItems);
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteOrder(@RequestBody Order order) {

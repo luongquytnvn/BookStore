@@ -39,12 +39,12 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, User user, Date date, Status status, List<OrderItem> orderItem, String phone, String shippingAddress, Double total) {
+    public Order(Long id, User user, Date date, Status status, List<OrderItem> orderItems, String phone, String shippingAddress, Double total) {
         this.id = id;
         this.user = user;
         this.date = date;
         this.status = status;
-        this.orderItems = orderItem;
+        this.orderItems = orderItems;
         this.phone = phone;
         this.shippingAddress = shippingAddress;
         this.total = total;
