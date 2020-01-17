@@ -16,12 +16,23 @@ public class OrderItem {
     private Book book;
     private long quantity;
 
+    @ManyToOne
+    private Order order;
+
     public OrderItem() {
     }
 
     public OrderItem(Book book, long quantity) {
         this.book = book;
         this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Long getId() {

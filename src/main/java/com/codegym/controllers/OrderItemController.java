@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -22,9 +24,18 @@ public class OrderItemController {
     }
 
     @GetMapping("/cart/{id}")
-    public ResponseEntity<Iterable<OrderItem>> showListOrderItemInOrder(@PathVariable Long id) {
-        Iterable<OrderItem> orderItems = orderItemRepository.findAll();
-        return new ResponseEntity<Iterable<OrderItem>>(orderItems, HttpStatus.OK);
+    public ResponseEntity<List<OrderItem>> findByOrderId(@PathVariable Long id) {
+        List<OrderItem> orderItems = orderItemRepository.findByOrder_Id(id);
+        return new ResponseEntity<List<OrderItem>>(orderItems, HttpStatus.OK);
+    }
+
+    @GetMapping("/cart/{idBook}/{idOrder}")
+    public  ResponseEntity<OrderItem> findByBook_IdAndOrder_Id(@PathVariable Long idBook,@PathVariable Long idOrder) {
+        OrderItem orderItem = orderItemRepository.findByBook_IdAndOrder_Id(idBook,idOrder);
+        if (orderItem==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<OrderItem>(orderItem, HttpStatus.OK);
     }
 
     @PostMapping("")
