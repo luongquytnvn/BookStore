@@ -14,7 +14,7 @@ public class OrderItem {
 
     @OneToOne
     private Book book;
-    private long quantity;
+    private long quantity = 1;
 
     @ManyToOne
     private Order order;
@@ -25,14 +25,6 @@ public class OrderItem {
     public OrderItem(Book book, long quantity) {
         this.book = book;
         this.quantity = quantity;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     public Long getId() {
@@ -51,15 +43,19 @@ public class OrderItem {
         this.book = book;
     }
 
+    public long getQuantity() {
+        return quantity;
+    }
+
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 
-    public Long getQuantity() {
-        return quantity;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
