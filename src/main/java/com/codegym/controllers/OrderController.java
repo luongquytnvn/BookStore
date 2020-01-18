@@ -89,6 +89,24 @@ public class OrderController {
         }
     }
 
+    @PutMapping("/toOrder")
+    public ResponseEntity<?> orderToOrder(@RequestBody Order order) {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        Optional<Order> currentOrder = orderService.findById(order.getId());
+        if (currentOrder.isPresent()) {
+            currentOrder.get().setDate(date);
+            currentOrder.get().setStatus(Status.order);
+            currentOrder.get().setTotal(order.getTotal());
+            currentOrder.get().setPhone(order.getPhone());
+            currentOrder.get().setShippingAddress(order.getShippingAddress());
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/add/{id}")
     public ResponseEntity<?> updateOrder(@RequestBody List<OrderItem> orderItems, @PathVariable("id") Long id) {
 
