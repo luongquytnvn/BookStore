@@ -31,22 +31,24 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         order.setStatus(Status.normal);
         orderService.save(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<Long>(order.getId(), HttpStatus.CREATED);
     }
 
     @GetMapping("")
-    public ResponseEntity<Order> findAllOrder() {
-//        List<Order> orderList = orderService.findAll();
-//        if(orderList != null){
-        Order order = new Order();
-        return new ResponseEntity<Order>(order, HttpStatus.OK);
+    public ResponseEntity<?> findAllOrder() {
+        List<Order> orderList = orderService.findAll();
+        if (orderList != null) {
+            return new ResponseEntity<List<Order>>(orderList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/cart/{id}")
     public ResponseEntity<Order> findByStatusAndUser_Id(@PathVariable("id") Long id) {
         Status status = Status.normal;
         Order order = orderRepository.findByStatusAndUser_Id(status, id);
-        if (order!=null) {
+        if (order != null) {
             return new ResponseEntity<Order>(order, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -120,6 +122,37 @@ public class OrderController {
         }
     }
 
+    @PutMapping("/change-status/{id}")
+    public ResponseEntity<?> changeOrderStatus(@RequestBody String status, @PathVariable Long id) {
+        Status currentStatus;
+        switch (status) {
+            case "order":
+                currentStatus = Status.order;
+                break;
+            case "processing":
+                currentStatus = Status.processing;
+                break;
+            case "Cancel":
+                currentStatus = Status.Cancel;
+                break;
+            case "Done":
+                currentStatus = Status.Done;
+                break;
+            case "normal":
+                currentStatus = Status.normal;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + status);
+        }
+        Optional<Order> currentOrder = orderService.findById(id);
+        if (currentOrder.isPresent()) {
+            currentOrder.get().setStatus(currentStatus);
+            orderService.save(currentOrder.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     @DeleteMapping("")

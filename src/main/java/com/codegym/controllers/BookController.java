@@ -37,9 +37,36 @@ public class BookController {
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/hot")
+    public ResponseEntity<List<Book>> getBookListHot() {
+        List<Book> books = bookRepository.findBookByHot();
+        if (books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
     @GetMapping("/category/{id}")
     public ResponseEntity<List<Book>> listAllBooksByCategory(@PathVariable Long id) {
         List<Book> books = bookService.findAllByCategory(id);
+        if (books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/language/{id}")
+    public ResponseEntity<List<Book>> listAllBooksByLanguage(@PathVariable Long id) {
+        List<Book> books = bookRepository.findBookByLanguages_Id(id);
+        if (books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/publishing/{id}")
+    public ResponseEntity<List<Book>> listAllBooksByPublishing(@PathVariable Long id) {
+        List<Book> books = bookRepository.findAllByPublishing_Id(id);
         if (books.isEmpty()) {
             return new ResponseEntity<List<Book>>(books, HttpStatus.NO_CONTENT);
         }
