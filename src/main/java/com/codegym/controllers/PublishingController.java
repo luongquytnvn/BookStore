@@ -1,5 +1,6 @@
 package com.codegym.controllers;
 
+import com.codegym.models.Language;
 import com.codegym.models.Publishing;
 import com.codegym.services.PublishingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +84,14 @@ public class PublishingController {
         }
         publishingService.remove(id);
         return new ResponseEntity<Publishing>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/findAllByName")
+    public ResponseEntity<List<Publishing>> findAllByName(@PathVariable String name){
+        List<Publishing> publishingList = publishingService.findAllByNameContaining(name);
+        if (!publishingList.isEmpty()) {
+            return new ResponseEntity<List<Publishing>>(publishingList, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Publishing>>(HttpStatus.NOT_FOUND);
+        }
     }
 }
