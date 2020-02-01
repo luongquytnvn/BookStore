@@ -6,6 +6,7 @@ import com.codegym.services.IAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,10 @@ public class AuthorServiceImpl implements IAuthorService {
     @Override
     public void remote(Long id) {
     authorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Author> findAllByNameContaining(String name) {
+        return authorRepository.findAllByNameContaining(name);
     }
 }
