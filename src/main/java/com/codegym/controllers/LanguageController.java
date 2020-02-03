@@ -71,8 +71,8 @@ public class LanguageController {
         }
         return new ResponseEntity<Language>(HttpStatus.NOT_FOUND);
     }
-    @GetMapping("/findAllByName")
-    public ResponseEntity<List<Language>> findAllByName(@PathVariable String name){
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Language>> findAllByName(@RequestBody String name){
         List<Language> languageList = languageServiceImpl.findAllByNameContaining(name);
         if (!languageList.isEmpty()) {
             return new ResponseEntity<List<Language>>(languageList, HttpStatus.OK);

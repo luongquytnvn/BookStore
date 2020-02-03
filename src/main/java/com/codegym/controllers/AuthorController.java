@@ -27,12 +27,12 @@ public class AuthorController {
     }
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity addNewAuthor(@Valid @RequestBody Author author){
+    public ResponseEntity<?> addNewAuthor(@Valid @RequestBody Author author){
         try {
             authorService.save(author);
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/{id}")
@@ -72,8 +72,8 @@ public class AuthorController {
         return new ResponseEntity<Author>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/findAllByName")
-    public ResponseEntity<List<Author>> findAllByName(@PathVariable String name){
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Author>> findAllByName(@RequestBody String name){
         List<Author> authorList = authorService.findAllByNameContaining(name);
         if (!authorList.isEmpty()) {
             return new ResponseEntity<List<Author>>(authorList, HttpStatus.OK);

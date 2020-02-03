@@ -20,4 +20,5 @@ public interface BookRepository extends JpaRepository<Book , Long> {
     List<Book> findBookByHot();
     @Query(value = "select * from book join book_languages bl on book.id = bl.book_id where languages_id = ?1", nativeQuery = true)
     List<Book> findBookByLanguages_Id(Long idLanguage);
+    List<Book> findAllByNameContaining(String name);
 }

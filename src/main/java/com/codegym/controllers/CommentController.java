@@ -84,8 +84,8 @@ public class CommentController {
         commentService.remove(id);
         return new ResponseEntity<Comment>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/findAllByName")
-    public ResponseEntity<List<Comment>> findAllByName(@PathVariable String name){
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Comment>> findAllByName(@RequestBody String name){
         List<Comment> commentList = commentService.findAllByNameContaining(name);
         if (!commentList.isEmpty()) {
             return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);

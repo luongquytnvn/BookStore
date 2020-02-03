@@ -85,8 +85,8 @@ public class CategoryController {
         categoryService.remove(id);
         return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/findAllByName")
-    public ResponseEntity<List<Category>> findAllByName(@PathVariable String name){
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Category>> findAllByName(@RequestBody String name){
         List<Category> categoryList = categoryService.findAllByNameContaining(name);
         if (!categoryList.isEmpty()) {
             return new ResponseEntity<List<Category>>(categoryList, HttpStatus.OK);

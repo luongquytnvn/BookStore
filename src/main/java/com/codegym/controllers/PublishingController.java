@@ -85,8 +85,8 @@ public class PublishingController {
         publishingService.remove(id);
         return new ResponseEntity<Publishing>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/findAllByName")
-    public ResponseEntity<List<Publishing>> findAllByName(@PathVariable String name){
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Publishing>> findAllByName(@RequestBody String name){
         List<Publishing> publishingList = publishingService.findAllByNameContaining(name);
         if (!publishingList.isEmpty()) {
             return new ResponseEntity<List<Publishing>>(publishingList, HttpStatus.OK);

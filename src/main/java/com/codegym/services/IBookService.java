@@ -12,4 +12,5 @@ public interface IBookService {
     void save(Book book);
     void remote(Long id);
     List<Book> findAllByCategory(Long id);
+    List<Book> findAllByNameContaining(String name);
 }
