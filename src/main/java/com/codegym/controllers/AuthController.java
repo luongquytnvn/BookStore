@@ -94,6 +94,19 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/change-profile")
+    public ResponseEntity<?> changeProfile(@Valid @RequestBody SignupRequest signupRequest) {
+        Optional<User> currentUser = userRepository.findByUsername(signupRequest.getUsername());
+        if (currentUser.isPresent()) {
+            currentUser.get().setEmail(signupRequest.getEmail());
+            currentUser.get().setPhone(signupRequest.getPhone());
+            currentUser.get().setAddress(signupRequest.getAddress());
+            userRepository.save(currentUser.get());
+            return new ResponseEntity<Optional<User>>(currentUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
