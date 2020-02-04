@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -69,5 +70,14 @@ public class LanguageController {
             return new ResponseEntity<Language>(HttpStatus.OK);
         }
         return new ResponseEntity<Language>(HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Language>> findAllByName(@RequestBody String name){
+        List<Language> languageList = languageServiceImpl.findAllByNameContaining(name);
+        if (!languageList.isEmpty()) {
+            return new ResponseEntity<List<Language>>(languageList, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Language>>(HttpStatus.NOT_FOUND);
+        }
     }
 }

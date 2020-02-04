@@ -2,6 +2,7 @@ package com.codegym.services;
 
 import com.codegym.models.Comment;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
@@ -12,4 +13,5 @@ public interface CommentService {
     void save(Comment comment);
 
     void remove(Long id);
+    List<Comment>findAllByNameContaining(String name);
 }

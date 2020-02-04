@@ -6,6 +6,7 @@ import com.codegym.services.ILanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,5 +31,10 @@ public class LanguageServiceImpl implements ILanguageService {
     @Override
     public void remote(Long id) {
         languageRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Language> findAllByNameContaining(String name) {
+        return languageRepository.findAllByNameContaining(name);
     }
 }

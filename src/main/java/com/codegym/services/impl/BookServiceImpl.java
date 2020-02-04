@@ -38,4 +38,9 @@ public class BookServiceImpl implements IBookService {
     public List<Book> findAllByCategory(Long id) {
         return bookRepository.findAllByCategory_Id(id);
     }
+
+    @Override
+    public List<Book> findAllByNameContaining(String name) {
+        return bookRepository.findAllByNameContaining(name);
+    }
 }

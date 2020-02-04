@@ -3,6 +3,7 @@ package com.codegym.controllers;
 import com.codegym.models.order.Order;
 import com.codegym.models.order.OrderItem;
 import com.codegym.models.order.Status;
+import com.codegym.repositories.OrderItemRepository;
 import com.codegym.repositories.OrderRepository;
 import com.codegym.services.impl.OrderServiceImpl;
 import com.codegym.services.impl.user.UserDetailsServiceImpl;
@@ -23,6 +24,8 @@ public class OrderController {
     @Autowired
     OrderServiceImpl orderService;
     @Autowired
+    OrderItemRepository orderItemRepository;
+    @Autowired
     OrderRepository orderRepository;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -37,6 +40,16 @@ public class OrderController {
     @GetMapping("")
     public ResponseEntity<?> findAllOrder() {
         List<Order> orderList = orderService.findAll();
+        if (orderList != null) {
+            return new ResponseEntity<List<Order>>(orderList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> findAllByUser_Id(@PathVariable Long id) {
+        List<Order> orderList = orderRepository.findAllByUser_Id(id);
         if (orderList != null) {
             return new ResponseEntity<List<Order>>(orderList, HttpStatus.OK);
         } else {
@@ -155,12 +168,20 @@ public class OrderController {
     }
 
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteOrder(@RequestBody Order order) {
-        Optional<Order> currentOrder = orderService.findById(order.getId());
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        Optional<Order> currentOrder = orderService.findById(id);
         if (currentOrder.isPresent()) {
-            orderService.deleteOrder(currentOrder.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            if (currentOrder.get().getStatus() != Status.Done) {
+                List<OrderItem> orderItems = orderItemRepository.findByOrder_Id(id);
+                for (OrderItem orderItem: orderItems) {
+                    orderItemRepository.delete(orderItem);
+                }
+                orderService.deleteOrder(currentOrder.get());
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>( "Can not delete this order", HttpStatus.BAD_REQUEST);
+            }
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -3,6 +3,7 @@ package com.codegym.controllers;
 import com.codegym.models.Author;
 import com.codegym.models.Book;
 import com.codegym.models.BookPicture;
+import com.codegym.models.order.Order;
 import com.codegym.models.order.OrderItem;
 import com.codegym.repositories.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,15 @@ public class OrderItemController {
         currentOrderItem.get().setOrder(orderItem.getOrder());
         orderItemRepository.save(currentOrderItem.get());
         return new ResponseEntity<Optional<OrderItem>>(currentOrderItem, HttpStatus.OK);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrderItem(@PathVariable Long id) {
+        Optional<OrderItem> currentOrderItem = orderItemRepository.findById(id);
+        if (currentOrderItem.isPresent()) {
+            orderItemRepository.delete(currentOrderItem.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

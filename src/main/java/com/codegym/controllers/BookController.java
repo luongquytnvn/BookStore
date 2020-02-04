@@ -37,6 +37,16 @@ public class BookController {
         return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
     }
 
+    @PostMapping("/findAllByName")
+    public ResponseEntity<List<Book>> findAllByNameContaining(@RequestBody String name) {
+        List<Book> books = bookService.findAllByNameContaining(name);
+        if (!books.isEmpty()) {
+            return new ResponseEntity<List<Book>>(books, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<List<Book>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/hot")
     public ResponseEntity<List<Book>> getBookListHot() {
         List<Book> books = bookRepository.findBookByHot();

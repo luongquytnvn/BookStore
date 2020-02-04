@@ -13,4 +13,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findByStatusAndUser_Id(Status status, Long user_id);
     @Query(value = "select order_items_id from  orders join users on orders.user_id = users.id join orders_order_items on orders.id = orders_order_items.order_id where status = 'normal' and user_id = ?1", nativeQuery = true)
     List<Long> findIdOrderItemListByUserId(Long idUser);
+    List<Order> findAllByUser_Id(Long user_id);
 }
