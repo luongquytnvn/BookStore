@@ -22,13 +22,13 @@ import java.util.Optional;
 @RequestMapping("/api/order")
 public class OrderController {
     @Autowired
-    OrderServiceImpl orderService;
+    private OrderServiceImpl orderService;
     @Autowired
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("")
     public ResponseEntity<?> createOrder(@RequestBody Order order) {

@@ -13,5 +13,6 @@ public interface CommentService {
     void save(Comment comment);
 
     void remove(Long id);
-    List<Comment>findAllByNameContaining(String name);
+
+    List<Comment> findAllByBook_Id(Long idBook);
 }

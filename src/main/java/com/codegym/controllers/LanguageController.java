@@ -18,7 +18,7 @@ import java.util.Optional;
 public class LanguageController {
 
     @Autowired
-    LanguageServiceImpl languageServiceImpl;
+    private LanguageServiceImpl languageServiceImpl;
     @GetMapping("")
     public ResponseEntity<Iterable<Language>> showListLanguage() {
         Iterable<Language> languages = languageServiceImpl.findAllLanguage();

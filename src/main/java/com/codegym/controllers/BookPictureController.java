@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequestMapping("/api/book-picture")
 public class BookPictureController {
     @Autowired
-    BookPictureService bookPictureService;
+    private BookPictureService bookPictureService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<BookPicture>> showListBookPicture() {

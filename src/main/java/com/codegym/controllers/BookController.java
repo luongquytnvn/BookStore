@@ -20,13 +20,13 @@ import java.util.Optional;
 @RequestMapping("/api/book")
 public class BookController {
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     @Autowired
-    IBookService bookService;
+    private IBookService bookService;
     @Autowired
-    Environment env;
+    private Environment env;
     @Autowired
-    BookPictureService bookPictureService;
+    private BookPictureService bookPictureService;
 
     @GetMapping("")
     public ResponseEntity<List<Book>> listAllBooks() {
