@@ -185,18 +185,4 @@ public class BookController {
         bookService.remote(id);
         return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
     }
-
-    @GetMapping("/vote/{id}")
-    public ResponseEntity<Optional<Book>> addVoteBook(@PathVariable("id") long id) {
-        System.out.println("Add vote Book with id " + id);
-        Optional<Book> book = bookService.findById(id);
-        if (!book.isPresent()) {
-            System.out.println("Book with id " + id + " not found");
-            return new ResponseEntity<Optional<Book>>(HttpStatus.NOT_FOUND);
-        }
-        book.get().setVote(book.get().getVote() + 1);
-        this.bookService.save(book.get());
-        return new ResponseEntity<Optional<Book>>(book, HttpStatus.OK);
-    }
-
 }

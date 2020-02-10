@@ -115,6 +115,7 @@ public class OrderController {
             currentOrder.get().setTotal(order.getTotal());
             currentOrder.get().setPhone(order.getPhone());
             currentOrder.get().setShippingAddress(order.getShippingAddress());
+            currentOrder.get().setPayment(order.getPayment());
             orderService.save(currentOrder.get());
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

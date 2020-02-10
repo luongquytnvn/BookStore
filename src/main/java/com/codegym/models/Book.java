@@ -16,8 +16,6 @@ public class Book {
     private String description;
     private long amount;
     private Date dateCreate;
-    private long vote = 0;
-
     @OneToMany
     private List<BookPicture> bookPictures;
 
@@ -30,14 +28,6 @@ public class Book {
 
     public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
-    }
-
-    public long getVote() {
-        return vote;
-    }
-
-    public void setVote(long vote) {
-        this.vote = vote;
     }
 
     public List<BookPicture> getBookPictures() {
