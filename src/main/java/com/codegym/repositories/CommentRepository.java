@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends CrudRepository<Comment, Long> {
-    List<Comment> findAllByNameContaining(String name);
+    List<Comment> findAllByBook_Id(Long book_id);
 }

@@ -1,13 +1,8 @@
 package com.codegym.models.order;
 
+import com.codegym.models.Payment;
 import com.codegym.models.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ManyToAny;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +30,9 @@ public class Order {
     private String shippingAddress;
 
     private Double total;
+
+    @ManyToOne
+    private Payment payment;
 
     public Order() {
     }
@@ -116,5 +114,21 @@ public class Order {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

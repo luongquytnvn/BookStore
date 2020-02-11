@@ -16,8 +16,6 @@ public class Book {
     private String description;
     private long amount;
     private Date dateCreate;
-    private long vote = 0;
-
     @OneToMany
     private List<BookPicture> bookPictures;
 
@@ -32,14 +30,6 @@ public class Book {
         this.dateCreate = dateCreate;
     }
 
-    public long getVote() {
-        return vote;
-    }
-
-    public void setVote(long vote) {
-        this.vote = vote;
-    }
-
     public List<BookPicture> getBookPictures() {
         return bookPictures;
     }
@@ -47,10 +37,6 @@ public class Book {
     public void setBookPictures(List<BookPicture> bookPictures) {
         this.bookPictures = bookPictures;
     }
-
-
-    @OneToMany(targetEntity = Comment.class, fetch = FetchType.EAGER)
-    private Set<Comment> comments;
 
     @ManyToMany
     private Set<Language> languages;
@@ -125,15 +111,6 @@ public class Book {
 
     public void setAmount(long amount) {
         this.amount = amount;
-    }
-
-
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
     }
 
     public Set<Language> getLanguages() {

@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/comment")
@@ -24,6 +25,15 @@ public class CommentController {
     @GetMapping("")
     public ResponseEntity<List<Comment>> listAllComments() {
         List<Comment> comments = (List<Comment>) commentService.findAll();
+        if (comments.isEmpty()) {
+            return new ResponseEntity<List<Comment>>(comments, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Comment>>(comments, HttpStatus.OK);
+    }
+
+    @GetMapping("/book/{id}")
+    public ResponseEntity<List<Comment>> findAllByBook_Id(@PathVariable Long id) {
+        List<Comment> comments = (List<Comment>) commentService.findAllByBook_Id(id);
         if (comments.isEmpty()) {
             return new ResponseEntity<List<Comment>>(comments, HttpStatus.NO_CONTENT);
         }
@@ -43,36 +53,36 @@ public class CommentController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> createComment(@RequestBody Comment comment, UriComponentsBuilder uriComponentsBuilder) {
-        System.out.println("Create Comment" + comment.getName());
-       commentService.save(comment);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(uriComponentsBuilder.path("/comments/{id}").buildAndExpand(comment.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    public ResponseEntity<?> createComment(@RequestBody Comment comment) {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        comment.setDate(date);
+        try {
+            commentService.save(comment);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Optional<Comment>> updateComment(@PathVariable("id") long id, @RequestBody Comment comment) {
         System.out.println("Update Comment " + id);
 
         Optional<Comment> currentComment = commentService.findById(id);
 
-        if (!currentComment.isPresent()) {
-            System.out.println("Comment with id" + id + "not found");
-            return new ResponseEntity<Optional<Comment>>(HttpStatus.NOT_FOUND);
+        if (currentComment.isPresent()) {
+            currentComment.get().setEdit(true);
+            currentComment.get().setContent(comment.getContent());
+            commentService.save(currentComment.get()
+            );
+            return new ResponseEntity<Optional<Comment>>(currentComment, HttpStatus.OK);
         }
-
-        currentComment.get().setName(comment.getName());
-        currentComment.get().setDate(comment.getDate());
-        currentComment.get().setContent(comment.getContent());
-        commentService.save(comment);
-        return new ResponseEntity<Optional<Comment>>(currentComment, HttpStatus.OK);
+        System.out.println("Comment with id" + id + "not found");
+        return new ResponseEntity<Optional<Comment>>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Comment> deleteComment(@PathVariable("id") long id) {
         System.out.println("Delete Comment with id" + id);
 
@@ -83,14 +93,5 @@ public class CommentController {
         }
         commentService.remove(id);
         return new ResponseEntity<Comment>(HttpStatus.NO_CONTENT);
-    }
-    @PostMapping("/findAllByName")
-    public ResponseEntity<List<Comment>> findAllByName(@RequestBody String name){
-        List<Comment> commentList = commentService.findAllByNameContaining(name);
-        if (!commentList.isEmpty()) {
-            return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<List<Comment>>(HttpStatus.NOT_FOUND);
-        }
     }
 }

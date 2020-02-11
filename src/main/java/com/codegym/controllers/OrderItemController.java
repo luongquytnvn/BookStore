@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/api/order-item")
 public class OrderItemController {
     @Autowired
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
     @GetMapping("")
     public ResponseEntity<Iterable<OrderItem>> showListOrderItem() {
         Iterable<OrderItem> orderItems = orderItemRepository.findAll();

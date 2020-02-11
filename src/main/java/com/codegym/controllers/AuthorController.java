@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api/author")
 public class AuthorController {
     @Autowired
-    IAuthorService authorService;
+    private IAuthorService authorService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Author>> showListAuthor() {
@@ -31,7 +31,7 @@ public class AuthorController {
         try {
             authorService.save(author);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (Exception e){
+        } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

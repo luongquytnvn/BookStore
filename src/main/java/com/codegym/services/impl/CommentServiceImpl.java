@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findAllByNameContaining(String name) {
-        return commentRepository.findAllByNameContaining(name);
+    public List<Comment> findAllByBook_Id(Long idBook) {
+        return commentRepository.findAllByBook_Id(idBook);
     }
 }
