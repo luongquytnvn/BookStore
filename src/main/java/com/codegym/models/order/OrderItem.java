@@ -3,7 +3,6 @@ package com.codegym.models.order;
 import com.codegym.models.Book;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "orderItem")

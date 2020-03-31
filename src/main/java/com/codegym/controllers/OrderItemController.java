@@ -1,20 +1,15 @@
 package com.codegym.controllers;
 
-import com.codegym.models.Author;
-import com.codegym.models.Book;
-import com.codegym.models.BookPicture;
-import com.codegym.models.order.Order;
 import com.codegym.models.order.OrderItem;
 import com.codegym.repositories.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/order-item")
@@ -34,7 +29,7 @@ public class OrderItemController {
     }
 
     @GetMapping("/cart/{idBook}/{idOrder}")
-    public  ResponseEntity<OrderItem> findByBook_IdAndOrder_Id(@PathVariable Long idBook,@PathVariable Long idOrder) {
+    public ResponseEntity<OrderItem> findByBook_IdAndOrder_Id(@PathVariable Long idBook, @PathVariable Long idOrder) {
         OrderItem orderItem = orderItemRepository.findByBook_IdAndOrder_Id(idBook,idOrder);
         if (orderItem==null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -61,7 +56,7 @@ public class OrderItemController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> editOrderItem(@RequestBody OrderItem orderItem,@PathVariable Long id) {
+    public ResponseEntity<?> editOrderItem(@RequestBody OrderItem orderItem, @PathVariable Long id) {
         System.out.println("Updating order item " + id);
         Optional<OrderItem> currentOrderItem = orderItemRepository.findById(id);
 

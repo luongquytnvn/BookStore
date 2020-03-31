@@ -181,4 +181,26 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+    @PostMapping("/roles/{role}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> roles(@PathVariable String role) {
+        Role newRole = new Role();
+        switch (role) {
+            case "admin":
+                newRole.setName(ERole.ROLE_ADMIN);
+                break;
+            case "mod":
+                newRole.setName(ERole.ROLE_MODERATOR);
+                break;
+            case "user":
+                newRole.setName(ERole.ROLE_USER);
+                break;
+            default:
+                break;
+        }
+        roleRepository.save(newRole);
+        return ResponseEntity.ok(new MessageResponse("Role successfully!"));
+    }
+
 }

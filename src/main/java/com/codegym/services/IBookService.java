@@ -1,7 +1,6 @@
 package com.codegym.services;
 
 import com.codegym.models.Book;
-import com.codegym.models.Category;
 
 import java.util.List;
 import java.util.Optional;

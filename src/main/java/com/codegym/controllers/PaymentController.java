@@ -3,7 +3,6 @@ package com.codegym.controllers;
 import com.codegym.models.Payment;
 import com.codegym.services.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
